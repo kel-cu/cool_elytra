@@ -21,12 +21,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 @Mixin(GameRenderer.class)
-public class GameRendererMixin {
+public abstract class GameRendererMixin {
 
 	@Final @Shadow private MinecraftClient client;
-	
-	@Inject(at = @At("HEAD"), method = "renderWorld")
-	public void renderWorld(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
+
+	@Shadow protected abstract void bobView(MatrixStack matrices, float tickDelta);
+
+	@Inject(at = @At("HEAD"), method = "bobView")
+	public void bobView(MatrixStack matrix, float tickDelta, CallbackInfo ci) {
 		// timer stuff
 		long time = System.nanoTime();
 		double frameTime = (time - CoolElytraClient.lastTime) * 1e-9;
@@ -51,7 +53,7 @@ public class GameRendererMixin {
 				// smooth changes to the roll angle and remove the bumpy crunchy
 				rollAngle += Math.pow(CoolElytraConfig.rollSmoothing, frameTime * 40) * (CoolElytraClient.lastRollAngle - rollAngle);
 				CoolElytraClient.lastRollAngle = rollAngle;
-				
+
 				matrix.multiply(new Quaternionf(new AxisAngle4f((float)(rollAngle * CoolElytraClient.TORAD), new Vector3f(0, 0, 1))));
 			} else {
 				CoolElytraClient.lastRollAngle = 0.0f;

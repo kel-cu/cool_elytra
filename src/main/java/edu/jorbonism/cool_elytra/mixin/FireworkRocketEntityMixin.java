@@ -28,6 +28,6 @@ public abstract class FireworkRocketEntityMixin {
 
 	@Shadow private boolean wasShotByEntity() { return false; }
 	@Shadow public ItemStack getStack() { return null; }
-	@Shadow protected void initDataTracker() {}
+//	@Shadow protected void initDataTracker() {}
 	
 }

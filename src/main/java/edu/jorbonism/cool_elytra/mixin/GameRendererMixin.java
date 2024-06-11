@@ -27,7 +27,7 @@ public abstract class GameRendererMixin {
 
 	@Shadow protected abstract void bobView(MatrixStack matrices, float tickDelta);
 
-	@Inject(at = @At("HEAD"), method = "bobView")
+	@Inject(at = @At("HEAD"), method = "tiltViewWhenHurt")
 	public void bobView(MatrixStack matrix, float tickDelta, CallbackInfo ci) {
 		// timer stuff
 		long time = System.nanoTime();
